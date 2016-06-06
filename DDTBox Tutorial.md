@@ -38,6 +38,13 @@
 
 A quick description of the toolbox, functions and relevant contributors.
 
+Original DDTBOX scripts were written by Stefan Bode.
+The toolbox was written with contributions from: Daniel Bennett, Jutta Stahl, Daniel Feuerriegel, Phillip Alday.
+The author further acknowledges helpful conceptual input/work from: Simon Lilburn, Philip L. Smith, Elaine Corbett, Carsten Murawski, Carsten Bogler, John-Dylan Haynes
+
+
+
+
 ###Introduction to multivariate pattern analysis (MVPA) with EEG: Approach and examples
 
 A general overview of MVPA with EEG, including examples of situations where MVPA gives additional information to standard ERP analyses.
@@ -101,6 +108,72 @@ Describe LibLINEAR, its capabilities relative to LibSVM, and show an example of 
 
 Describe the backend options available to the user (accessible through the GUI or by scripting). Emphasize that people must know exactly what they are doing when they change these settings.
 
+DDTBox uses LibSVM and LibLINEAR for multivariate pattern classification and support-vector regression. 
+LibSVM and LibLINEAR require input flags to specify the type of statistical model that will be used for decoding. 
+We strongly recommend using the default flags unless you have a thorough understanding of support vector machines and LibSVM.
+Do not change these parameters unless you really know what you are doing!!!
+
+**LibSVM Flags**
+
+For more information about LibSVM and the full list of libSVM flags see https://www.csie.ntu.edu.tw/~cjlin/libsvm/
+ 
+The citation for LibSVM is Chih-Chung Chang and Chih-Jen Lin, LIBSVM : a library for support vector machines. ACM Transactions on Intelligent Systems and Technology, 2:27:1--27:27, 2011.
+ 
+The following inputs are used as flags for LibSVM in DDTBox:
+-s SVM Type : set type of SVM
+  0 -- C-Support Vector Classification
+  1 -- nu-Support Vector Classification
+  2 -- one-class SVM
+  3 -- epsilon-Support Vector Regression
+  4 -- nu-Support Vector Regression
+
+-t Kernel Type : set type of kernel function
+  0 -- linear: u' * v				Default kernel
+  1 -- polynomial: (gamma * u' * v + coef0)^degree
+  2 -- radial basis function: exp(-gamma * |u-v|^2)
+  3 -- sigmoid: tanh(gamma * u' * v + coef0)
+ 
+-c : Cost Parameter
+
+
+Additional flags can also be specified in the GUI.
+
+
+**LibLINEAR Flags**
+
+For more information about LibLINEAR and the full list of LibLINEAR flags see https://www.csie.ntu.edu.tw/~cjlin/liblinear/
+
+The citation for LibLINEAR is R.-E. Fan, K.-W. Chang, C.-J. Hsieh, X.-R. Wang, and C.-J. Lin. LIBLINEAR: A library for large linear classification Journal of Machine Learning Research 9(2008), 1871--1874.
+
+The following inputs are used as flags for LibLINEAR in DDTBox:
+
+-c cost : cost parameter
+
+-s svm_type:
+  0 -- L2-regularized logistic regression (primal)
+  1 -- L2-regularized L2-loss support vector classification (dual)
+  2 -- L2-regularized L2-loss support vector classification (primal)
+  3 -- L2-regularized L1-loss support vector classification (dual)
+  4 -- support vector classification by Crammer and Singer
+  5 -- L1-regularized L2-loss support vector classification
+  6 -- L1-regularized logistic regression
+  7 -- L2-regularized logistic regression (dual)
+  11 -- L2-regularized L2-loss support vector regression (primal)
+  12 -- L2-regularized L2-loss support vector regression (dual)
+  13 -- L2-regularized L1-loss support vector regression (dual)
+
+**Default Flags for LibSVM and LibLINEAR**
+
+The following settings are used as defaults in DDTBox:
+
+Support Vector Classification with LibSVM - '-s 0 -t 0 -c 1'
+Support Vector Regression with LibSVM - '-s 3 -t 0 -c 0.1'
+Support Vector Regression (continuous) with LibSVM - '-s 3 -t 0 -c 0.1'
+Support Vector Classification with LibLINEAR - '-s 2 -c 1'
+
+
+
+
 ###Decoding Z-scored data
 
 Describe the Z-transformation for spatial, temporal and spatio-temporal data. Give an example of when decoding on z-scores would be useful.
@@ -133,6 +206,8 @@ This section gives an example of feature weight analysis results, along with a g
 ###Corrections for multiple comparisons
 
 This section outlines the multiple comparisons problem, and the options available for correcting for this.
+
+
 
 ###Robust statistical inference tests
 
