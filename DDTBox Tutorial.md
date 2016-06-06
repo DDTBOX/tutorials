@@ -69,6 +69,19 @@ Show how selected ICs can be used as input for decoding analyses.
 
 Describe the data structure used for DDTBox and how other types of data (e.g. behavioural data) can be prepared for decoding.
 
+DDTBox can also be used for multivariate decoding of other data types than EEG, for example patterns of eye movements or the trajectory of the subject's hand in a behavioural reaching task.
+
+The EEG data structure used by DDTBox is of the form:
+
+EEGdata{run, condition}(timepoints, channels, trials)
+
+This means that matrices of timepoint x channel x trial are stored in each cell denoting a different condition/run combination.
+In this data, a run refers to a block of trials. If using single-trials, there is usually only one run in the dataset.
+For other types of data once can substitute timepoints and channels for dimension 1 and dimension 2 of the relevant dataset.
+For example, in an eye tracking experiment the dimension "timepoints" may still refer to a time after stimulus onset, whereas one could use two "channels" to record the x and y coordinates of the subject's gaze fixation.
+
+
+
 ###Configuration settings
 
 Outline the main configuration settings that can be input into DDTBox, with a clear explanation of each one.
@@ -202,6 +215,19 @@ Support Vector Classification with LibLINEAR - '-s 2 -c 1'
 
 Describe the Z-transformation for spatial, temporal and spatio-temporal data. Give an example of when decoding on z-scores would be useful.
 
+For some analyses it can be useful to convert the EEG or other data into z-scores before running decoding analyses.
+This can be useful for identifying patterns across sensors and/or time that are independent of overall amplitude differences across conditions.
+Z-scoring can also be useful for cross-condition classification (training on one set of data and testing on another set of data) when the absolute amplitudes of the event-related potentials differ across the datasets.
+For example, if the event-related potentials are more positive overall in the training data than the test data, then this amplitude difference can cause problems for a linear classifier.
+Z-scoring is a way to remove this net amplitude difference and so may help the classifiers attain a higher decoding accuracy in these situations.
+
+The way in which data are converted into z-scores depends on the analysis type:
+
+**Spatial decoding**: Data are z-scored across electrodes for each time window.
+
+**Temporal decoding**: Data are z-scored across time-points for each individual electrode.
+
+**Spatio-temporal decoding**: Data are z-scored across time-points for each individual electrode.
 
 
 ##Example: Multivariate pattern classification with support vector machines (SVMs)##
@@ -227,9 +253,13 @@ This section shows examples of individual- and group-level results, along with a
 
 This section gives an example of feature weight analysis results, along with a guide for interpreting the plots.
 
+
 ###Corrections for multiple comparisons
 
 This section outlines the multiple comparisons problem, and the options available for correcting for this.
+
+
+
 
 
 
