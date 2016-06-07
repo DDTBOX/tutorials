@@ -51,8 +51,16 @@ A general overview of MVPA with EEG, including examples of situations where MVPA
 
 ###The tutorial dataset
 
-A short description of the tutorial dataset, including the experiment and data characteristics. 
-For now this would be the Faces and Chairs epoched data in Feuerriegel et al. (2015) but a different dataset might be more appropriate.
+The example dataset is from [Feuerriegel, Churches and Keage (2015)](http://www.sciencedirect.com/science/article/pii/S0167876015001075).
+Epochs in the tutorial dataset are in response to visual presentations of greyscale faces and chairs.
+This was an image category repetition experiment in which there were two stimuli sequentially presented in each trial, separated by an interstimulus interval.
+Participants were required to detect a superimposed red rectangle in one of the images in the trial.
+Data from 19 subjects were included. This differs from the 16 subject datasets included for analysis in the publication, however subjects provided adequate numbers of epochs for the purposes of the tutorial.
+Only the first 250 epoched responses to the first stimulus in each trial (a face or a chair image) has been used in the dataset. 
+This corresponds to at least 100 epochs for each image category per subject dataset.
+EEG data was recorded using a 64-channel Neuroscan EEG system and has been downsampled from 1000Hz in the original paper to 250Hz.
+The EEG data was epoched from -100 to +300ms from stimulus onset, and baseline-corrected using the prestimulus interval.
+
 
 ##Preparing your data for decoding in DDTBox##
 
@@ -258,10 +266,44 @@ This section gives an example of feature weight analysis results, along with a g
 
 This section outlines the multiple comparisons problem, and the options available for correcting for this.
 
+When performing multiple tests one must control the family-wise error rate (FWER) or false discovery rate (FDR) to maintain the probability of Type 1 errors (false rejections of the null hypothesis) at the nominal level (usually 0.05).
+DDTBox provides several options for multiple comparisons correction procedures, which differ in their conservativeness but also in the inferences that can be made from each corrected family of tests.
+For more information on each method and a useful tutorial on multiple comparisons corrections see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
+
+The currently-available options are:
+
+1. No correction for multiple comparisons
+2. Bonferroni correction
+3. Holm-Bonferroni correction
+4. Permutation testing based on maximum t statistics
+5. Cluster-based permutation testing using cluster mass
+6. Generalised family-wise error rate control using permutation tests
+7. Benjamini-Hochberg false discovery rate control
+8. Benjamini-Krieger-Yekutieli false discovery rate control
+9. Benjamini-Yekutieli false discovery rate control
+
+**No correction for multiple comparisons**
+This option does not control for multiple comparisons.
+
+**Bonferroni correction**
+The Bonferroni correction (Dunn, 1959, 1961) divides the critical alpha level (commonly 0.05) by the number of tests.
+P-values that are smaller than this adjusted alpha level are declared statistically significant.
+This method controls the family-wise error rate, but can be overly conservative when there are a large number of tests.
+
+**Holm-Bonferroni correction**
 
 
+**Permutation testing based on maximum t statistics**
 
+**Cluster-based permutation testing using cluster mass**
 
+**Generalised family-wise error rate control using permutation tests**
+
+**Benjamini-Hochberg false discovery rate control**
+
+**Benjamini-Krieger-Yekutieli false discovery rate control**
+
+**Benjamini-Yekutieli false discovery rate control**
 
 ###Robust statistical inference tests
 
