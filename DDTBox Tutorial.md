@@ -298,7 +298,7 @@ This is the section for a worked tutorial using the GUI and some advice about sc
 
 ###Plotting and interpreting the decoding results
 
-This section shows examples of individual- and group-level results, along with a guide for interpreting the plots.
+*This section shows examples of individual- and group-level results, along with a guide for interpreting the plots.*
 
 
 ###Feature weight analyses
@@ -308,13 +308,13 @@ This section gives an example of feature weight analysis results, along with a g
 
 ###Corrections for multiple comparisons
 
-This section outlines the multiple comparisons problem, and the options available for correcting for this.
+When performing multiple tests it is usually important to control the family-wise error rate (FWER) or false discovery rate (FDR) to maintain the probability of Type 1 errors (i.e. false rejections of the null hypothesis) at the nominal level (usually 0.05).
+DDTBox provides several options for multiple comparisons correction procedures.
+Many of these have been adopted from techniques used in mass univariate analysis of ERPs, which take advantage of the correlation seen across time points in EEG data. 
+These methods differ with regard to their ability to detect real effects but also in the inferences that can be made from each corrected family of tests.
+For more information on these methods and a useful tutorial on multiple comparisons corrections see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
 
-When performing multiple tests one must control the family-wise error rate (FWER) or false discovery rate (FDR) to maintain the probability of Type 1 errors (false rejections of the null hypothesis) at the nominal level (usually 0.05).
-DDTBox provides several options for multiple comparisons correction procedures, which differ in their conservativeness but also in the inferences that can be made from each corrected family of tests.
-For more information on each method and a useful tutorial on multiple comparisons corrections see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
-
-The currently-available options are:
+The options available in DDTBox are:
 
 1. No correction for multiple comparisons
 2. Bonferroni correction
@@ -330,28 +330,114 @@ The currently-available options are:
 This option does not control for multiple comparisons.
 
 **Bonferroni correction**
-The Bonferroni correction (Dunn, 1959, 1961) divides the critical alpha level (commonly 0.05) by the number of tests.
+The Bonferroni correction (Dunn, [1959](), [1961]()) divides the critical alpha level (commonly 0.05) by the number of tests.
 P-values that are smaller than this adjusted alpha level are declared statistically significant.
-This method controls the family-wise error rate, but can be overly conservative when there are a large number of tests.
+This method controls the family-wise error rate, but can be overly conservative when there are a large number of tests (and so may fail to detect real effects).
 
 **Holm-Bonferroni correction**
+The Holm-Bonferroni correction ([Holm, 1979]()) controls the family-wise error rate but is less conservative than the Bonferroni correction.
+The method is described as follows:
+
+1. Conduct m tests (for example using paired-samples t tests or Yuen's t test).
+
+2.	Sort the resulting p-values from lowest to highest: p(1), p(2) ... p(m).
+p(1) refers to the smallest p-value, and so H(1) refers to the null hypothesis test with the smallest p-value.
+p(2) refers to the second smallest p-value, p(3) refers to the third smallest p-value, and so on.
+
+3. Set k = 1.
+
+4. Check whether p(k) is larger than the critical alpha level / (m + 1 - k). *Check how to do mathematical notation in markdown*
+
+5. If p(k) is larger than this value, then do not reject the null hypothesis H(k) and stop the procedure.
+If the procedure is stopped then all untested null hypotheses H(k + 1) ... H(m) are also not rejected.
+If p(1) is not larger than this value, then reject null hypothesis H(k).
+
+6. If the procedure has not been stopped then repeat steps 4 and 5 for k = 2, k = 3, ... k = m.
+
+*Detail the assumptions and shortcomings of this method*
+
+
+
+
 
 
 **Permutation testing based on maximum t statistics**
 
+This option uses the approach described in [Blair and Karniski (1993)]().
+Their method is guaranteed to control the family-wise error rate but is much more sensitive to detect effects compared to the Bonferroni correction.
+The method is implemented in DDTBox as follows:
+
+1.	Run paired-samples t-tests for each analysis time window and record t statistics resulting from each test.
+2.	For each time window generate a permutation sample of decoding accuracies (randomly switching condition labels between the actual test and permutation decoding results, or the actual results and the theoretical chance level).
+3.	Repeat step 2 B times (B = number of permutations to use).
+B should be set as at least 1000 for inferences using a critical alpha of p = 0.05, and at least 5000-10000 for inferences at p = 0.01.
+4.	For each set of permutations (i.e. one permutation sample for each time window makes a set of tests) calculate the maximum absolute t-value (positive or negative).
+For example, get the 1st permutation sample for each time window and then find the maximum absolute t-value, and then get the 2nd permutation sample for each time window and find the maximum absolute t-value, etc.
+5.	Calculate the 95th percentile of the distribution of these maximum t-values. This is the adjusted statistical significance threshold.
+6.	Check whether each of the original tests (not using the permutation samples) gives a t-value above the threshold.
+Tests yielding larger absolute t-values (positive or negative) than the threshold are declared statistically significant.
+All other tests are not declared statistically-significant. 
+
 **Cluster-based permutation testing using cluster mass**
+
+Cluster-based permutation testing ([Bullmore et al., 1999](), see also [Maris & Oostenveld, 2007]()) is a method that is very sensitive for detecting effects that persist over adjacent time windows.
+It is similar to the Blair-Karniski permutation test above, but uses test statistics derived from clusters (i.e. groups of temporally adjacent statistically significant effects).
+This approach takes advantage of the fact that real effect in EEG data are often correlated over time.
+Consequently, real effects may be spread over several adjacent time windows, whereas spurious chance effects are more likely to be limited to an isolated time window.
+The method is implemented in DDTBox as follows:
+
+1.	Run paired samples t-tests on each of the time windows and record t statistics from each test.
+For adjacent t-tests which are statistically significant at some specified threshold (e.g. 0.05) add these t scores to generate a cluster statistic.
+Isolated statistically significant tests are also treated as separate clusters.
+2.	For each time window generate a permutation sample of decoding accuracies (randomly switching condition labels between the actual test and permutation results, or the actual results and the theoretical chance level).
+3.	Repeat step 2 B times (B = number of permutations to use).
+B should be set as at least 1000 for inferences using a critical alpha of p = 0.05, and at least 5000-10000 for inferences at p = 0.01.
+4.	For each permutation find the maximum cluster mass (sum of t scores across adjacent statistically significant tests) within the set of tests.
+Adjacent statistically-significant tests that change sign (i.e. a positive difference switching to a negative difference) are assigned to different clusters.
+5.	Calculate the 95th percentile of the distribution of maximum cluster mass statistics.
+This becomes the adjusted statistical significance threshold.
+6.	Check whether each cluster in the original (non-permutation) tests gives a cluster mass above the threshold.
+Tests in clusters with larger cluster masses than the threshold are declared statistically significant.
+All other tests are not declared statistically-significant. 
+
+
+*Describe weak FWER control and the limitations on inferences drawn*
+This correction is also influenced by the critical alpha level used to determine whether individual tests are statistically significant (and so whether they would be included in clusters).
+A threshold of p = 0.05 is useful for detecting effects that persist over time windows, but may lack the sensitivity to detect effects that are limited to a single time window.
+Stricter thresholds such as p = 0.01 are useful for detecting effects isolated to a single time window when these effects give very large t statistics, but are less effective at detecting weaker broadly-distributed effects over time.
+
+
+
 
 **Generalised family-wise error rate control using permutation tests**
 
+*Intro for this approach, reread Groppe et al. and original paper*
+
+If u parameter is set to 0, then this procedure is the same as the Blaire-Karniski permutation test described above.
+*Check if the permutation test is still done on all tests, or just the m – u tests to get the t-values.*
+
+1.	Sort p-values from the entire family of tests from smallest to largest.
+2.	Automatically reject u hypotheses. 
+Set the p-values for these tests to 0.
+3.	For the remaining m – u hypotheses (m = number of tests) obtain the adjusted p-values via the t(max) permutation test, but for each permutation or bootstrap sample extract the u + 1th most extreme t statistic. 
+
+
 **Benjamini-Hochberg false discovery rate control**
+
 
 **Benjamini-Krieger-Yekutieli false discovery rate control**
 
+
 **Benjamini-Yekutieli false discovery rate control**
+
+
+**Comparing multiple comparisons correction methods**
+
+*Compare results from each correction method on the tutorial dataset results, showing how each method may be more/less sensitive to detect different effect*
 
 ###Robust statistical inference tests
 
-This section briefly introduces problems with conventional tests and outlines a robust alternative available in DDTBox: Yuen's T Test, with the associated included function.
+*This section briefly introduces problems with conventional tests and outlines a robust alternative available in DDTBox: Yuen's T Test, with the associated included function.*
 
 
 
