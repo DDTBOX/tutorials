@@ -330,12 +330,13 @@ The options available in DDTBox are:
 This option does not control for multiple comparisons.
 
 **Bonferroni correction**
-The Bonferroni correction (Dunn, [1959](), [1961]()) divides the critical alpha level (commonly 0.05) by the number of tests.
+The Bonferroni correction (Dunn, [1959](10.1214/aoms/1177706374), [1961](10.1080/01621459.1961.10482090)) divides the critical alpha level (commonly 0.05) by the number of tests.
 P-values that are smaller than this adjusted alpha level are declared statistically significant.
 This method controls the family-wise error rate, but can be overly conservative when there are a large number of tests (and so may fail to detect real effects).
 
 **Holm-Bonferroni correction**
-The Holm-Bonferroni correction ([Holm, 1979]()) controls the family-wise error rate but is less conservative than the Bonferroni correction.
+The Holm-Bonferroni correction ([Holm, 1979](http://www.jstor.org/stable/4615733)) controls the family-wise error rate in the strong sense but is less conservative than the Bonferroni correction.
+One advantage of the Holm-Bonferroni method is that it does not rely on assumptions about the independence of tests at different time windows.
 The method is described as follows:
 
 1. Conduct m tests (for example using paired-samples t tests or Yuen's t test).
@@ -354,17 +355,10 @@ If p(1) is not larger than this value, then reject null hypothesis H(k).
 
 6. If the procedure has not been stopped then repeat steps 4 and 5 for k = 2, k = 3, ... k = m.
 
-*Detail the assumptions and shortcomings of this method*
-
-
-
-
-
 
 **Permutation testing based on maximum t statistics**
-
-This option uses the approach described in [Blair and Karniski (1993)]().
-Their method is guaranteed to control the family-wise error rate but is much more sensitive to detect effects compared to the Bonferroni correction.
+This option uses the approach described in [Blair and Karniski (1993)](dx.doi.org/10.1111/j.1469-8986.1993.tb02075.x).
+Their method is guaranteed to control the family-wise error rate in the strong sense but is usually more sensitive to detect effects compared to the Bonferroni correction.
 The method is implemented in DDTBox as follows:
 
 1.	Run paired-samples t-tests for each analysis time window and record t statistics resulting from each test.
@@ -378,9 +372,11 @@ For example, get the 1st permutation sample for each time window and then find t
 Tests yielding larger absolute t-values (positive or negative) than the threshold are declared statistically significant.
 All other tests are not declared statistically-significant. 
 
+
+
 **Cluster-based permutation testing using cluster mass**
 
-Cluster-based permutation testing ([Bullmore et al., 1999](), see also [Maris & Oostenveld, 2007]()) is a method that is very sensitive for detecting effects that persist over adjacent time windows.
+Cluster-based permutation testing ([Bullmore et al., 1999](dx.doi.org/10.1109/42.750253), see also [Maris & Oostenveld, 2007](dx.doi.org/10.1016/j.jneumeth.2007.03.024)) is a method that is very sensitive for detecting effects that span several adjacent time windows.
 It is similar to the Blair-Karniski permutation test above, but uses test statistics derived from clusters (i.e. groups of temporally adjacent statistically significant effects).
 This approach takes advantage of the fact that real effect in EEG data are often correlated over time.
 Consequently, real effects may be spread over several adjacent time windows, whereas spurious chance effects are more likely to be limited to an isolated time window.
@@ -394,42 +390,45 @@ Isolated statistically significant tests are also treated as separate clusters.
 B should be set as at least 1000 for inferences using a critical alpha of p = 0.05, and at least 5000-10000 for inferences at p = 0.01.
 4.	For each permutation find the maximum cluster mass (sum of t scores across adjacent statistically significant tests) within the set of tests.
 Adjacent statistically-significant tests that change sign (i.e. a positive difference switching to a negative difference) are assigned to different clusters.
-5.	Calculate the 95th percentile of the distribution of maximum cluster mass statistics.
+5.	Calculate the nth percentile of the distribution of maximum cluster mass statistics (for example 95th percentile for a critical alpha of 0.05).
 This becomes the adjusted statistical significance threshold.
 6.	Check whether each cluster in the original (non-permutation) tests gives a cluster mass above the threshold.
 Tests in clusters with larger cluster masses than the threshold are declared statistically significant.
 All other tests are not declared statistically-significant. 
 
-
-*Describe weak FWER control and the limitations on inferences drawn*
-This correction is also influenced by the critical alpha level used to determine whether individual tests are statistically significant (and so whether they would be included in clusters).
+Cluster-based permutation tests control the family-wise error rate in the weak sense.
+Weak family-wise error rate control means that the type 1 error rate control is guaranteed only when all tested null hypotheses are true (i.e. there are no real effects in the data).
+This means that cluster-based permutation tests are very good at detecting effects, but one cannot be sure of the exact onset or offset of the effect.
+When the precise timing of an effect is important to your research question, then the Blair-Karniski permutation test will be more appropriate.
+Cluster-based permutation test results are also influenced by the critical alpha level used to determine whether individual tests are statistically significant (and so whether they are included in clusters).
 A threshold of p = 0.05 is useful for detecting effects that persist over time windows, but may lack the sensitivity to detect effects that are limited to a single time window.
 Stricter thresholds such as p = 0.01 are useful for detecting effects isolated to a single time window when these effects give very large t statistics, but are less effective at detecting weaker broadly-distributed effects over time.
-
-
-
 
 **Generalised family-wise error rate control using permutation tests**
 
 *Intro for this approach, reread Groppe et al. and original paper*
 
-If u parameter is set to 0, then this procedure is the same as the Blaire-Karniski permutation test described above.
-*Check if the permutation test is still done on all tests, or just the m – u tests to get the t-values.*
+This method controls the generalised family-wise error rate, which means, with the probability of the set critical alpha, that the number of false discoveries does not exceed a set parameter u.
+As u is higher (and more false discoveries are allowed) the power of this method greatly increases, allowing more real effects to be detected.
+If u parameter is set to 0, then this procedure is the same as the Blair-Karniski permutation test described above.
+The method used in DDTBox is by [Korn, Troendle, McShane and Simon (2004)](http://www.sciencedirect.com/science/article/pii/S0378375803002118) as described in [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
+The method is implemented as follows:
 
-1.	Sort p-values from the entire family of tests from smallest to largest.
-2.	Automatically reject u hypotheses. 
-Set the p-values for these tests to 0.
-3.	For the remaining m – u hypotheses (m = number of tests) obtain the adjusted p-values via the t(max) permutation test, but for each permutation or bootstrap sample extract the u + 1th most extreme t statistic. 
-
-
-**Benjamini-Hochberg false discovery rate control**
-
-
-**Benjamini-Krieger-Yekutieli false discovery rate control**
+1.	For m tests, sort p-values from the entire family of tests from smallest to largest.
+2.	Automatically reject the u null hypotheses with the smallest p-values. 
+The p-values for the automatically-rejected null hypotheses is set to zero.
+3.	For the remaining m – u hypotheses obtain the adjusted p-values via the Blair-Karniski permutation test, but for each permutation extract the u + 1th most postive/negative t statistic to create the null hypothesis distribution. 
 
 
-**Benjamini-Yekutieli false discovery rate control**
+**False discovery rate control**
 
+False discovery rate (FDR) control is a more powerful alternative to strong family-wise error rate control, that is based on the proportion of false discoveries (mistakenly-rejected null hypotheses).
+These procedures provide only weak family-wise error rate control, however the number of false discoveries is usually much smaller than the number of real effects found using this procedure.
+The FDR control procedures here differ with regard to their underlying assumptions and their conservativeness.
+The [Benjamini-Hochberg procedure](http://www.jstor.org/stable/2346101) assumes that individual analysis time windows (within the family of tests) are independent or positively correlated.
+The [Benjamini-Krieger-Yekutieli procedure](dx.doi.org/10.1093/biomet/93.3.491) assumes that results at each time window are independent (i.e. not positively or negatively correlated).
+The [Benjamini-Yekutieli procedure](dx.doi.org/10.1198/016214504000001907) does not make assumptions about the independence of results across time windows, but is more conservative than the other FDR control procedures.
+For a more detailed discussion of the properties of false discovery rate control see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
 
 **Comparing multiple comparisons correction methods**
 
