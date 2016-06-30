@@ -1,4 +1,4 @@
-# DDTBox Tutorial
+# DDTBox Documentation
 
 ## Contents
 
@@ -6,12 +6,14 @@
   1. The Decision Decoding Toolbox (DDTBox)
   2. External dependencies
   3. The tutorial dataset
-2. Preparing your data for decoding in DDTBox
+2. Getting Started
+  1. Installing DDTBox
+3. Preparing your data for decoding in DDTBox
   1. Epoched EEG data
   2. Independent component activations
   3. Other types of data (Advanced)
   4. Configuration settings
-3. Decoding methods
+4. Decoding methods
   1. Spatial decoding
   2. Temporal decoding
   3. Spatio-temporal decoding
@@ -21,20 +23,24 @@
   7. Decoding using LibLINEAR (Advanced)
   8. SVM Backend Options (Advanced)
   9. Decoding Z-scored data
-4. Example: Multivariate pattern classification with support vector machines (SVMs)
-5. Example: Support vector regression
+5. Tutorial: Multivariate pattern classification with support vector machines (SVMs)
 6. Analysing the decoded data
   1. Plotting and interpreting the decoding results
   2. Feature weight analyses
   3. Corrections for multiple comparisons
   4. Robust statistical inference tests
-
+7. Tutorial: Plotting and analysing decoded data
+8. Troubleshooting
+  1. FAQ
+  2. Support
 
 
 
 ##Introduction to DDTBox##
 
 ###The Decision Decoding Toolbox (DDTBox)
+
+Release No. 1.0
 
 DDTBox is a toolbox for multivariate pattern analysis (MVPA) of epoched EEG and other types of data.
 This toolbox can be used as a plugin for [EEGLab](http://sccn.ucsd.edu/eeglab/) or as a standalone toolbox in MATLAB.
@@ -76,6 +82,18 @@ Only the first 250 epoched responses to the first stimulus in each trial (a face
 This corresponds to at least 100 epochs for each image category per subject dataset.
 EEG data was recorded using a 64-channel Neuroscan EEG system and has been downsampled to 250Hz to limit file sizes in the tutorial dataset.
 EEG data was epoched from -100 to +300ms from stimulus onset, and baseline-corrected using the prestimulus interval.
+
+*Include where the user can access the tutorial dataset, once a storage location has been determined*
+
+##Getting Started##
+
+###Installing and configuring DDTBox###
+
+*Information on how to install DDTBox to work with MATLAB*
+
+###Installing and configuring LibSVM###
+
+*Information on how to install and configure LibSVM or LibLINEAR*
 
 
 ##Preparing your data for decoding in DDTBox##
@@ -406,8 +424,6 @@ Stricter thresholds such as p = 0.01 are useful for detecting effects isolated t
 
 **Generalised family-wise error rate control using permutation tests**
 
-*Intro for this approach, reread Groppe et al. and original paper*
-
 This method controls the generalised family-wise error rate, which means, with the probability of the set critical alpha, that the number of false discoveries does not exceed a set parameter u.
 As u is higher (and more false discoveries are allowed) the power of this method greatly increases, allowing more real effects to be detected.
 If u parameter is set to 0, then this procedure is the same as the Blair-Karniski permutation test described above.
@@ -439,4 +455,23 @@ For a more detailed discussion of the properties of false discovery rate control
 *This section briefly introduces problems with conventional tests and outlines a robust alternative available in DDTBox: Yuen's T Test, with the associated included function.*
 
 
+
+##Tutorial: Plotting and analysing decoded data##
+
+*Use the tutorial dataset to show how decoding results can be plotted and interpreted*
+
+
+
+
+##Troubleshooting##
+
+###FAQ###
+
+There have not yet been questions that have been frequently asked.
+
+*Could source FAQs from questions asked at the UniSA/Uni Melbourne Workshop*
+
+###Support###
+
+*Detail details of bug reports and the DDTBox mailing list here*
 
