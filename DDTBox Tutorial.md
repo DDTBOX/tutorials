@@ -13,6 +13,7 @@
   2. Independent component activations
   3. Other types of data (Advanced)
   4. Configuration settings
+  5. Creating a channel location file
 4. Decoding methods
   1. Spatial decoding
   2. Temporal decoding
@@ -134,6 +135,14 @@ For example, in an eye tracking experiment the dimension "timepoints" may still 
 ###Configuration settings
 
 *Outline the main configuration settings that can be input into DDTBox, with a clear explanation of each one.*
+
+
+###Creating a channel locations file
+
+A channel locations file is used for plotting the feature weights results of temporal decoding analyses.
+Channel locations files can be created from the EEG structure in EEGLab by coping the EEG.chaninfo and EEG.chanlocs fields into a separate MATLAB file.
+A function for creating channel locations files from loaded EEGLab datasets is provided in the toolbox (ddtbox_createchanlocs.m)
+
 
 
 
