@@ -25,12 +25,16 @@
   8. SVM Backend Options (Advanced)
   9. Decoding Z-scored data
 5. Tutorial: Multivariate pattern classification with support vector machines (SVMs)
+  1. Run in EEGLab
+  2. Independently from EEGLab
 6. Analysing the decoded data
   1. Plotting and interpreting the decoding results
   2. Feature weight analyses
   3. Corrections for multiple comparisons
   4. Robust statistical inference tests
 7. Tutorial: Plotting and analysing decoded data
+  1. Run in EEGLab
+  2. Independently from EEGLab
 8. Troubleshooting
   1. FAQ
   2. Support
@@ -53,9 +57,9 @@ The author further acknowledges helpful conceptual input/work from: Jutta Stahl,
 
 Copyright (c) 2013--2016 Stefan Bode and contributors.
 
-Unless otherwise specified, code is distributed under the GNU Public License (GPL) version 2, and documentation under a Creative Commons Attribution-Share-Alike 4.0 International license.
+Unless otherwise specified, code is distributed under the GNU Public License (GPL) version 2, and documentation under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />
 
 We hope that you find the software and documentation useful.
 If you publish an analysis using the toolbox, we ask that you cite us. 
@@ -66,7 +70,7 @@ Bode, S., Bennett, D., Feuerriegel, D., & Alday, P. (2016). The Decision Decodin
 
 ### External Dependencies
 
-The code in the toolbox depends on the functionality supplied by [LIBSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/).
+The code in DDTBox depends on the functionality supplied by [LIBSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/).
 We also offer support for LIBSVM's specialised and often faster cousin, [LIBLINEAR](https://www.csie.ntu.edu.tw/~cjlin/liblinear/), as well as potentially other backends for other classifiers. 
 You need to configure MATLAB to use these external dependencies.
 Please see their respective documentation for more information. 
@@ -77,8 +81,8 @@ Please see their respective documentation for more information.
 The tutorial dataset is from [Feuerriegel, Churches and Keage (2015)](http://www.sciencedirect.com/science/article/pii/S0167876015001075).
 This dataset contains epoched EEG responses to visual presentations of faces and chairs.
 The data is from an image category repetition experiment in which there were two stimuli sequentially presented in each trial, separated by an interstimulus interval.
-Participants were required to detect a superimposed red rectangle in one of the images in the trial.
-Data from 19 subjects were included. This differs from the 16 subject datasets included for analysis in the publication, as multiple subjects provided adequate numbers of epochs for the purposes of the tutorial.
+Participants were required to detect a superimposed red rectangle in one of the images in the trial (red rectangles appeared in 9% of trials).
+Data from 19 subjects were included. This differs from the 16 subject datasets included for analysis in the publication, as multiple subjects provided adequate numbers of epochs for the purposes of the tutorial dataset.
 Only the first 250 epoched responses to the first stimulus in each trial (a face or a chair image) has been used in the dataset. 
 This corresponds to at least 100 epochs for each image category per subject dataset.
 EEG data was recorded using a 64-channel Neuroscan EEG system and has been downsampled to 250Hz to limit file sizes in the tutorial dataset.
@@ -90,47 +94,46 @@ EEG data was epoched from -100 to +300ms from stimulus onset, and baseline-corre
 
 ###Installing and configuring DDTBox###
 
-*Information on how to install DDTBox to work with MATLAB*
+To use DDTBox as an EEGLab plugin copy the folder containing the DDTBOX code into the "plugins" folder in EEGLab.
+When you initialise EEGLab in MATLAB the DDTBox plugin should automatically load, and can then be found in the "Tools" menu of the EEGLab GUI.
 
-###Installing and configuring LibSVM###
+To use DDTBox independently of EEGLab you can specify the path to the code in MATLAB.
+To do this click "Set Path" then click "Add Folder" and specify the folder containing the DDTBox code.
 
-*Information on how to install and configure LibSVM or LibLINEAR*
-
+*Note: Are there any other configuration steps to mention? For example where to put chanlocs files?*
 
 ##Preparing your data for decoding in DDTBox##
 
 ###Epoched EEG data
 
-DDTBox accepts epoched EEG data which has been preprocessed in EEGLab (if you use programs other than EEGLab to prepare your data then please see the 'Other types of data (Advanced)' section). 
-There are many approaches to preprocessing EEG data, and different preprocessing methods may be appropriate for different datasets. 
+DDTBox accepts epoched EEG data which has been preprocessed in EEGLab (if you use programs other than EEGLab to prepare your data then please see the 'Other types of data (Advanced)' section).
+DDTBox can also be used with data that has been epoched using [ERPLab](http://erpinfo.org/erplab).
+There are many approaches to preprocessing EEG data. Different preprocessing methods may be appropriate for different datasets. 
 For a guide and example pipeline please see the workshop slides provided by Daniel Bennett in the [DDTBox tutorials repository](https://github.com/DDTBOX/tutorials).
-Also, here is an [example EEG preprocessing pipeline](https://github.com/danielbrianbennett/eeg-preprocessing) for use with EEGLab.
+Also, an [example EEG preprocessing pipeline](https://github.com/danielbrianbennett/eeg-preprocessing) is provided for use with EEGLab.
 
 ###Independent component activations
 
 DDTBox can also perform MVPA on epoched component activations derived from Independent Components Analysis (ICA). 
 ICA is used for blind separation of multiple sources which contribute to potentials observed at the scalp.
 In some cases several distinct components can be identified that contribute to a single observed effect in the EEG data (e.g. [Onton, Delorme & Makeig, 2005](http://www.sciencedirect.com/science/article/pii/S1053811905002673)).
-A tutorial on performing ICA can be found [here](http://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA).
+A tutorial on performing ICA in EEGLab can be found [here](http://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA).
 
 ###Other types of data (Advanced)
 
-DDTBox can also be used with epoched EEG data other than that processed in EEGLab.
-It can also be used with other types of data, for example to analyse patterns of eye movements or the trajectory of a participant's hand.
+DDTBox can also be used with epoched EEG data processed using custom scripts or other software packages.
+It can also be used with other types of data, for example patterns of eye movements or the trajectory of a participant's hand.
 This can be achieved by converting the data into the format accepted by DDTBox.
 
 The EEG data format used by DDTBox is a MATLAB array with a matrix contained within each cell of the array:
 
 example_data{run, condition}(timepoints, channels, trials)
 
-This means that matrices of timepoint x channel x trial are stored in each cell denoting a different condition/run combination.
-A run refers to a block of trials. If using single-trial data, there will only be one run in the dataset.
-For other types of data once can substitute timepoints and channels for dimension 1 and dimension 2 of the relevant dataset.
+The timepoint x channel x trial matrices are stored in each cell denoting a different condition/run combination.
+A run refers to a set of trials.
+For example, for one condition each block of trials in an experiment might be counted as a separate run.
+For other types of data you can substitute timepoints and channels for dimension 1 and dimension 2 of the relevant dataset.
 For example, in an eye tracking experiment the dimension "timepoints" may still refer to a time after stimulus onset, whereas one could use two "channels" to record the x and y coordinates of the subject's gaze fixation.
-
-
-*Note: Do we know of a small example dataset that we could provide, to show how other data types could be used?*
-
 
 ###Configuration settings
 
@@ -141,15 +144,18 @@ For example, in an eye tracking experiment the dimension "timepoints" may still 
 
 A channel locations file is used for plotting the feature weights results of temporal decoding analyses.
 Channel locations files can be created from the EEG structure in EEGLab by coping the EEG.chaninfo and EEG.chanlocs fields into a separate MATLAB file.
-A function for creating channel locations files from loaded EEGLab datasets is provided in the toolbox (ddtbox_createchanlocs.m)
 
-
-
+A function for creating channel locations files from loaded EEGLab datasets is provided.
+Before using this function you must load an EEGLab dataset into the MATLAB workspace.
+Then, you can call the function as follows:
+<div>
+make_chanlocs_file(EEG, 'save_filepath', location at which the channel locations file will be saved) 
+</div>
 
 ##Decoding methods##
 
 DDTBox has several options for decoding EEG signals.
-These options concern how the features (data points) are defined for MVPA, as well as the choice of datasets used for training and testing the classifier.
+These options concern how the features (data values in each dimension) are defined for MVPA, as well as the choice of datasets used for training and testing the classifier.
 
 ###Spatial decoding
 
@@ -159,7 +165,7 @@ For example, if decoding using 64-channel EEG then there will be 64 features use
 
 ###Temporal decoding
 
-Temporal decoding performs MVPA on the pattern of potential amplitude at each time point within a time window of interest.
+Temporal decoding performs MVPA on the pattern of potential amplitudes at each time point within a time window of interest.
 A separate decoding analysis is done for each electrode.
 The features in this decoding approach are the potential amplitudes at each time point for a given electrode.
 For example, if there are 10 samples within the time window of interest then there will be 10 features used for analyses (i.e. 10 dimensions in the dataset).
@@ -174,8 +180,8 @@ For example, if there are 10 samples within the time window of interest and 64 c
 ###Cross-condition decoding
 
 Cross-condition decoding allows you to train the classifier on one set of data and then test the classifier on a separate set of data.
-This approach can be useful to determine whether the observed multivariate pattern differences are stable across different testing conditions.
-For example, cross-condition decoding can be used to test whether differences in multivariate patterns evoked by faces and chairs are stable across different task demands.
+This approach can be useful to determine whether any observed multivariate pattern differences are stable across different testing conditions.
+For example, cross-condition decoding can be used to test whether differences in multivariate patterns evoked by different object categories (such as faces and chairs) are stable across different experimental tasks.
 
 ###Permutation decoding with randomly-shuffled condition labels
 
@@ -185,7 +191,11 @@ This approach is similar to the univariate permutation test.
 
 ###Feature weight extraction
 
-*Define feature weights and their uses.*
+DDTBox can extract feature weights from the SVM classification results.
+Each EEG data channel is assigned a feature weight based on the importance of each channel for the SVM classification.
+For more information on how to interpret feature weights results, see [Haufe et al. (2014)](http://www.sciencedirect.com/science/article/pii/S1053811913010914).
+
+*Provide a concise description of feature weights so that they can be easily interpreted by the user*
 
 ###Decoding using LibLINEAR (Advanced)
 
@@ -209,13 +219,13 @@ Do not change these parameters unless you really know what you are doing!!!
 
 For more information about LibSVM and the full list of libSVM flags see https://www.csie.ntu.edu.tw/~cjlin/libsvm/
  
-The citation for LibSVM is Chih-Chung Chang and Chih-Jen Lin, LIBSVM : a library for support vector machines. ACM Transactions on Intelligent Systems and Technology, 2:27:1--27:27, 2011.
+The citation for LibSVM is Chih-Chung Chang and Chih-Jen Lin, LIBSVM : A library for support vector machines. ACM Transactions on Intelligent Systems and Technology, 2:27:1--27:27, 2011.
  
 The following inputs are used as flags for LibSVM in DDTBox:
 
--c : Cost Parameter
+**-c** : Cost Parameter
 
--s SVM Type : set type of SVM
+**-s** SVM Type : set type of SVM
 
   0 -- C-Support Vector Classification
   
@@ -227,7 +237,7 @@ The following inputs are used as flags for LibSVM in DDTBox:
   
   4 -- nu-Support Vector Regression
 
--t Kernel Type : set type of kernel function
+**-t** Kernel Type : set type of kernel function
 
   0 -- linear: u' * v				Default kernel
   
@@ -249,9 +259,9 @@ The citation for LibLINEAR is R.-E. Fan, K.-W. Chang, C.-J. Hsieh, X.-R. Wang, a
 
 The following inputs are used as flags for LibLINEAR in DDTBox:
 
--c cost : cost parameter
+**-c** cost : cost parameter
 
--s svm_type:
+**-s** svm_type:
 
   0 -- L2-regularized logistic regression (primal)
   
@@ -292,9 +302,7 @@ Support Vector Classification with LibLINEAR - '-s 2 -c 1'
 
 ###Decoding Z-scored data
 
-Describe the Z-transformation for spatial, temporal and spatio-temporal data. Give an example of when decoding on z-scores would be useful.
-
-For some analyses it can be useful to convert the EEG or other data into z-scores before running decoding analyses.
+For some analyses it can be useful to convert the EEG or other data into z-scores before MVPA.
 This can be useful for identifying patterns across sensors and/or time that are independent of overall amplitude differences across conditions.
 Z-scoring can also be useful for cross-condition classification (training on one set of data and testing on another set of data) when the absolute amplitudes of the event-related potentials differ across the datasets.
 For example, if the event-related potentials are more positive overall in the training data than the test data, then this amplitude difference can cause problems for a linear classifier.
@@ -311,13 +319,10 @@ The way in which data are converted into z-scores depends on the analysis type:
 
 ##Example: Multivariate pattern classification with support vector machines (SVMs)##
 
-This is the section for a worked tutorial using the GUI and some advice about scripting for advanced users.
+###Run in EEGLab
 
 
-
-##Example: Support vector regression##
-
-This is the section for a worked tutorial using the GUI and some advice about scripting for advanced users.
+###Independently from EEGLab
 
 
 
@@ -468,6 +473,10 @@ For a more detailed discussion of the properties of false discovery rate control
 ##Tutorial: Plotting and analysing decoded data##
 
 *Use the tutorial dataset to show how decoding results can be plotted and interpreted*
+
+###Run in EEGLab###
+
+###Independently from EEGLab###
 
 
 
