@@ -12,8 +12,7 @@
   1. Epoched EEG data
   2. Independent component activations
   3. Other types of data (Advanced)
-  4. Configuration settings
-  5. Creating a channel location file
+  4. Creating a channel location file
 4. Decoding methods
   1. Spatial decoding
   2. Temporal decoding
@@ -24,6 +23,7 @@
   7. Decoding using LibLINEAR (Advanced)
   8. SVM Backend Options (Advanced)
   9. Decoding Z-scored data
+  10. List of configuration settings for decoding
 5. Tutorial: Multivariate pattern classification with support vector machines (SVMs)
   1. Run in EEGLab
   2. Independently from EEGLab
@@ -134,11 +134,6 @@ A run refers to a set of trials.
 For example, for one condition each block of trials in an experiment might be counted as a separate run.
 For other types of data you can substitute timepoints and channels for dimension 1 and dimension 2 of the relevant dataset.
 For example, in an eye tracking experiment the dimension "timepoints" may still refer to a time after stimulus onset, whereas one could use two "channels" to record the x and y coordinates of the subject's gaze fixation.
-
-###Configuration settings
-
-*Outline the main configuration settings that can be input into DDTBox, with a clear explanation of each one.*
-
 
 ###Creating a channel locations file
 
@@ -299,7 +294,6 @@ Support Vector Classification with LibLINEAR - '-s 2 -c 1'
 
 
 
-
 ###Decoding Z-scored data
 
 For some analyses it can be useful to convert the EEG or other data into z-scores before MVPA.
@@ -315,6 +309,49 @@ The way in which data are converted into z-scores depends on the analysis type:
 **Temporal decoding**: Data are z-scored across time-points for each individual electrode.
 
 **Spatio-temporal decoding**: Data are z-scored across time-points for each individual electrode.
+
+
+###List of configuration settings for decoding
+
+The following configuration parameters can be set within the EEGLab GUI or in MATLAB scripts when calling DDTBox functions:
+
+**stmode**   space/time decoding type (1=spatial / 2=temporal / 3=spatio-temporal)
+
+**avmode**   averaging mode (1=no averaging; single-trial / 2=run averaged) 
+
+**analysis_mode** analysis mode (1=SVM classification, 2=LDA classification, 3=SVR increments, 4=SVR continous, 5=SVM with liblinear)
+*Note: Update analysis mode settings when LDA option has been removed.*
+
+**window_width_ms**  width of sliding analysis window in milliseconds
+
+**step_width_ms**  step size with which the sliding window is moved through the epoch.
+
+**perm_test** choose whether to run permutation decoding analyses with randomly-assigned condition labels (0=no / 1=yes)
+
+**display_on**  choose whether to display the decoding results in a figure (0=no / 1=yes)
+
+**perm_disp** choose whether to display the permutation results in a figure (0=no / 1=yes)
+
+**zscore_convert**  choose whether to convert data into z-scores before decoding (0 = no / 1 = yes)
+
+**feat_weights_mode**  choose whether to extract feature weights (0=no / 1=yes)
+
+**cross_val_steps**  Set the number of cross-validation steps
+
+**n_rep_cross_val**  Set the number of repetitions of full cross-validation with randomly re-ordered data
+
+**permut_rep**  Set the number of repetitions of full cross-validation cycles using permutation decoding
+
+
+
+To set configuration parameters in MATLAB scripts you can add the name of the parameter as a string, followed by the value of that parameter.
+For example:
+
+*Give an example of the decoding_erp function with input argument pairs*
+
+There are no true defaults in DDTBox, so it is a good idea to set all parameters yourself when calling DDTBox functions. 
+
+
 
 
 ##Example: Multivariate pattern classification with support vector machines (SVMs)##
