@@ -369,6 +369,8 @@ There are no true defaults in DDTBox, so it is a good idea to set all parameters
 
 *This section shows examples of individual- and group-level results, along with a guide for interpreting the plots.*
 
+DDTBox uses paired-samples t tests for analyses, however an advanced user can perform other statistical tests on the data.
+
 
 ###Feature weight analyses
 
@@ -503,9 +505,10 @@ For a more detailed discussion of the properties of false discovery rate control
 
 ###Robust statistical inference tests
 
-*This section briefly introduces problems with conventional tests and outlines a robust alternative available in DDTBox: Yuen's T Test, with the associated included function.*
-
-
+Analyses in DDTBox can also be performed using the paired-samples version of Yuen's t test ([Yuen, 1974](dx.doi.org/10.1093/biomet/61.1.165)) which is a robust alternative to the paired-samples t test.
+Paired-samples t tests can perform poorly (especially with regard to variance estimates) when the data distribution is not Gaussian/normal or when there are outliers.
+Yuen's t test generally performs well under normality, but can guard against problems caused by non-Gaussian data distributions.
+For an accessible introduction to robust statistical methods see [Wilcox (2012)](http://www.sciencedirect.com/science/book/9780123869838).
 
 ##Tutorial: Plotting and analysing decoded data##
 
