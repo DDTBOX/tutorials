@@ -12,7 +12,7 @@
   1. Epoched EEG data
   2. Independent component activations
   3. Other types of data (Advanced)
-  4. Creating a channel location file
+  4. Creating a channel locations file
 4. Decoding methods
   1. Spatial decoding
   2. Temporal decoding
@@ -50,9 +50,9 @@ Release No. 1.0
 DDTBox is a toolbox for multivariate pattern analysis (MVPA) of epoched EEG and other types of data.
 This toolbox can be used as a plugin for [EEGLab](http://sccn.ucsd.edu/eeglab/) or as a standalone toolbox in MATLAB.
 
-DDTBOX core scripts were originally written by Stefan Bode.
+DDTBOX core scripts were written by Stefan Bode.
 The toolbox was written with contributions from: Daniel Bennett, Daniel Feuerriegel, Phillip Alday.
-The author further acknowledges helpful conceptual input/work from: Jutta Stahl, Simon Lilburn, Philip L. Smith, Elaine Corbett, Carsten Murawski, Carsten Bogler, John-Dylan Haynes.
+The authors further acknowledge helpful conceptual input/work from: Jutta Stahl, Simon Lilburn, Philip L. Smith, Elaine Corbett, Carsten Murawski, Carsten Bogler, John-Dylan Haynes.
 
 
 Copyright (c) 2013--2016 Stefan Bode and contributors.
@@ -94,7 +94,7 @@ EEG data was epoched from -100 to +300ms from stimulus onset, and baseline-corre
 
 ###Installing and configuring DDTBox###
 
-To use DDTBox as an EEGLab plugin copy the folder containing the DDTBOX code into the "plugins" folder in EEGLab.
+To use DDTBox as an EEGLab plugin copy the folder containing DDTBOX code into the "plugins" folder in EEGLab.
 When you initialise EEGLab in MATLAB the DDTBox plugin should automatically load, and can then be found in the "Tools" menu of the EEGLab GUI.
 
 To use DDTBox independently of EEGLab you can specify the path to the code in MATLAB.
@@ -116,7 +116,7 @@ Also, an [example EEG preprocessing pipeline](https://github.com/danielbrianbenn
 
 DDTBox can also perform MVPA on epoched component activations derived from Independent Components Analysis (ICA). 
 ICA is used for blind separation of multiple sources which contribute to potentials observed at the scalp.
-In some cases several distinct components can be identified that contribute to a single observed effect in the EEG data (e.g. [Onton, Delorme & Makeig, 2005](http://www.sciencedirect.com/science/article/pii/S1053811905002673)).
+In some cases multiple distinct components can be identified that contribute to an experimental effect in the EEG data (e.g. [Onton, Delorme & Makeig, 2005](http://www.sciencedirect.com/science/article/pii/S1053811905002673)).
 A tutorial on performing ICA in EEGLab can be found [here](http://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA).
 
 ###Other types of data (Advanced)
@@ -125,7 +125,7 @@ DDTBox can also be used with epoched EEG data processed using custom scripts or 
 It can also be used with other types of data, for example patterns of eye movements or the trajectory of a participant's hand.
 This can be achieved by converting the data into the format accepted by DDTBox.
 
-The EEG data format used by DDTBox is a MATLAB array with a matrix contained within each cell of the array:
+The EEG data format used by DDTBox is a MATLAB array with a three-dimensional matrix contained within each cell of the array:
 
 example_data{run, condition}(timepoints, channels, trials)
 
@@ -137,11 +137,11 @@ For example, in an eye tracking experiment the dimension "timepoints" may still 
 
 ###Creating a channel locations file
 
-A channel locations file is used for plotting the feature weights results of temporal decoding analyses.
+A channel locations file is used for plotting the feature weights results as a two-dimensional scalp map.
 Channel locations files can be created from the EEG structure in EEGLab by coping the EEG.chaninfo and EEG.chanlocs fields into a separate MATLAB file.
 
 A function for creating channel locations files from loaded EEGLab datasets is provided.
-Before using this function you must load an EEGLab dataset into the MATLAB workspace.
+Before using this function you must load an EEGLab dataset with channel locations information into the MATLAB workspace.
 Then, you can call the function as follows:
 <div>
 make_chanlocs_file(EEG, 'save_filepath', location at which the channel locations file will be saved) 
@@ -149,12 +149,12 @@ make_chanlocs_file(EEG, 'save_filepath', location at which the channel locations
 
 ##Decoding methods##
 
-DDTBox has several options for decoding EEG signals.
-These options concern how the features (data values in each dimension) are defined for MVPA, as well as the choice of datasets used for training and testing the classifier.
+DDTBox has several options for decoding epoched EEG data.
+These options concern how the data is used for MVPA, as well as the choice of datasets used for training and testing the classifier.
 
 ###Spatial decoding
 
-Spatial decoding performs MVPA on the pattern of potential amplitudes across electrodes, averaged over the time window of interest.
+Spatial decoding performs MVPA on the pattern of potential amplitudes across electrodes averaged over the time window of interest.
 The features in this decoding approach are the average potential amplitudes within a time window at each electrode. 
 For example, if decoding using 64-channel EEG then there will be 64 features used for analyses (i.e. a 64 dimensions in the dataset).
 
@@ -188,9 +188,7 @@ This approach is similar to the univariate permutation test.
 
 DDTBox can extract feature weights from the SVM classification results.
 Each EEG data channel is assigned a feature weight based on the importance of each channel for the SVM classification.
-For more information on how to interpret feature weights results, see [Haufe et al. (2014)](http://www.sciencedirect.com/science/article/pii/S1053811913010914).
-
-*Provide a concise description of feature weights so that they can be easily interpreted by the user*
+For more information on how to interpret feature weights see [Haufe et al. (2014)](http://www.sciencedirect.com/science/article/pii/S1053811913010914).
 
 ###Decoding using LibLINEAR (Advanced)
 
@@ -381,7 +379,7 @@ This section gives an example of feature weight analysis results, along with a g
 
 When performing multiple tests it is usually important to control the family-wise error rate (FWER) or false discovery rate (FDR) to maintain the probability of Type 1 errors (i.e. false rejections of the null hypothesis) at the nominal level (usually 0.05).
 DDTBox provides several options for multiple comparisons correction procedures.
-Many of these have been adopted from techniques used in mass univariate analysis of ERPs, which take advantage of the correlation seen across time points in EEG data. 
+Many of these have been adopted from methods used in mass univariate analysis of ERPs, which take advantage of the correlation seen across time points in EEG data. 
 These methods differ with regard to their ability to detect real effects but also in the inferences that can be made from each corrected family of tests.
 For more information on these methods and a useful tutorial on multiple comparisons corrections see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
 
@@ -501,7 +499,7 @@ For a more detailed discussion of the properties of false discovery rate control
 
 **Comparing multiple comparisons correction methods**
 
-*Compare results from each correction method on the tutorial dataset results, showing how each method may be more/less sensitive to detect different effect*
+*Compare results from each correction method on the tutorial dataset results, showing how each method may be more/less sensitive to detect different effects*
 
 ###Robust statistical inference tests
 
