@@ -489,13 +489,13 @@ The p-values for the automatically-rejected null hypotheses is set to zero.
 
 **False discovery rate control**
 
-False discovery rate (FDR) control is a more powerful alternative to strong family-wise error rate control, that is based on the proportion of false discoveries (mistakenly-rejected null hypotheses or Type 1 errors) relative to the total number of rejected null hypotheses.
+False discovery rate (FDR) control is a more powerful alternative to strong family-wise error rate control, that is based on the expected (average) proportion of false discoveries (mistakenly-rejected null hypotheses or Type 1 errors) relative to the total number of rejected null hypotheses.
 These procedures provide only weak family-wise error rate control, however the number of false discoveries is usually much smaller than the number of real effects found using this procedure.
 The FDR control procedures here differ with regard to their underlying assumptions and their conservativeness.
 The [Benjamini-Hochberg procedure](http://www.jstor.org/stable/2346101) assumes that individual analysis time windows (within the family of tests) are independent or positively correlated.
 The [Benjamini-Krieger-Yekutieli procedure](dx.doi.org/10.1093/biomet/93.3.491) assumes that results at each time window are independent (i.e. not positively or negatively correlated).
 The [Benjamini-Yekutieli procedure](dx.doi.org/10.1198/016214504000001907) does not make assumptions about the independence of results across time windows, but is more conservative than the other FDR control procedures.
-For a more detailed discussion of the properties of false discovery rate control see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full).
+For a more detailed discussion of the properties of false discovery rate control see [Groppe, Urbach and Kutas (2011)](http://onlinelibrary.wiley.com/doi/10.1111/j.1469-8986.2011.01273.x/full) and [Romano et al. (2008)](dx.doi.org/10.1177/0962280206079046).
 
 **Comparing multiple comparisons correction methods**
 
