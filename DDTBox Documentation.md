@@ -489,7 +489,7 @@ The p-values for the automatically-rejected null hypotheses is set to zero.
 
 **False discovery rate control**
 
-False discovery rate (FDR) control is a more powerful alternative to strong family-wise error rate control, that is based on the proportion of false discoveries (mistakenly-rejected null hypotheses).
+False discovery rate (FDR) control is a more powerful alternative to strong family-wise error rate control, that is based on the proportion of false discoveries (mistakenly-rejected null hypotheses or Type 1 errors) relative to the total number of rejected null hypotheses.
 These procedures provide only weak family-wise error rate control, however the number of false discoveries is usually much smaller than the number of real effects found using this procedure.
 The FDR control procedures here differ with regard to their underlying assumptions and their conservativeness.
 The [Benjamini-Hochberg procedure](http://www.jstor.org/stable/2346101) assumes that individual analysis time windows (within the family of tests) are independent or positively correlated.
