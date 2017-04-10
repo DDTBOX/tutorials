@@ -41,9 +41,9 @@
 
 
 
-##Introduction to DDTBox##
+## Introduction to DDTBox
 
-###The Decision Decoding Toolbox (DDTBox)
+### The Decision Decoding Toolbox (DDTBox)
 
 Release No. 1.0
 
@@ -76,23 +76,12 @@ You need to configure MATLAB to use these external dependencies.
 Please see their respective documentation for more information. 
 
 
-###The tutorial dataset
+### The tutorial dataset
 
-The tutorial dataset is from [Feuerriegel, Churches and Keage (2015)](http://www.sciencedirect.com/science/article/pii/S0167876015001075).
-This dataset contains epoched EEG responses to visual presentations of faces and chairs.
-The data is from an image category repetition experiment in which there were two stimuli sequentially presented in each trial, separated by an interstimulus interval.
-Participants were required to detect a superimposed red rectangle in one of the images in the trial (red rectangles appeared in 9% of trials).
-Data from 19 subjects were included. This differs from the 16 subject datasets included for analysis in the publication, as multiple subjects provided adequate numbers of epochs for the purposes of the tutorial dataset.
-Only the first 250 epoched responses to the first stimulus in each trial (a face or a chair image) has been used in the dataset. 
-This corresponds to at least 100 epochs for each image category per subject dataset.
-EEG data was recorded using a 64-channel Neuroscan EEG system and has been downsampled to 250Hz to limit file sizes in the tutorial dataset.
-EEG data was epoched from -100 to +300ms from stimulus onset, and baseline-corrected using the prestimulus interval.
 
-*Include where the user can access the tutorial dataset, once a storage location has been determined*
+## Getting Started
 
-##Getting Started##
-
-###Installing and configuring DDTBox###
+### Installing and configuring DDTBox
 
 To use DDTBox as an EEGLab plugin copy the folder containing DDTBOX code into the "plugins" folder in EEGLab.
 When you initialise EEGLab in MATLAB the DDTBox plugin should automatically load, and can then be found in the "Tools" menu of the EEGLab GUI.
@@ -102,9 +91,9 @@ To do this click "Set Path" then click "Add Folder" and specify the folder conta
 
 *Note: Are there any other configuration steps to mention? For example where to put chanlocs files?*
 
-##Preparing your data for decoding in DDTBox##
+## Preparing your data for decoding in DDTBox
 
-###Epoched EEG data
+### Epoched EEG data
 
 DDTBox accepts epoched EEG data which has been preprocessed in EEGLab (if you use programs other than EEGLab to prepare your data then please see the 'Other types of data (Advanced)' section).
 DDTBox can also be used with data that has been epoched using [ERPLab](http://erpinfo.org/erplab).
@@ -112,14 +101,14 @@ There are many approaches to preprocessing EEG data. Different preprocessing met
 For a guide and example pipeline please see the workshop slides provided by Daniel Bennett in the [DDTBox tutorials repository](https://github.com/DDTBOX/tutorials).
 Also, an [example EEG preprocessing pipeline](https://github.com/danielbrianbennett/eeg-preprocessing) is provided for use with EEGLab.
 
-###Independent component activations
+### Independent component activations
 
 DDTBox can also perform MVPA on epoched component activations derived from Independent Components Analysis (ICA). 
 ICA is used for blind separation of multiple sources which contribute to potentials observed at the scalp.
 In some cases multiple distinct components can be identified that contribute to an experimental effect in the EEG data (e.g. [Onton, Delorme & Makeig, 2005](http://www.sciencedirect.com/science/article/pii/S1053811905002673)).
 A tutorial on performing ICA in EEGLab can be found [here](http://sccn.ucsd.edu/wiki/Chapter_09:_Decomposing_Data_Using_ICA).
 
-###Other types of data (Advanced)
+### Other types of data (Advanced)
 
 DDTBox can also be used with epoched EEG data processed using custom scripts or other software packages.
 It can also be used with other types of data, for example patterns of eye movements or the trajectory of a participant's hand.
@@ -147,50 +136,50 @@ Then, you can call the function as follows:
 make_chanlocs_file(EEG, 'save_filepath', location at which the channel locations file will be saved) 
 </div>
 
-##Decoding methods##
+## Decoding methods
 
 DDTBox has several options for decoding epoched EEG data.
 These options concern how the data is used for MVPA, as well as the choice of datasets used for training and testing the classifier.
 
-###Spatial decoding
+### Spatial decoding
 
 Spatial decoding performs MVPA on the pattern of potential amplitudes across electrodes averaged over the time window of interest.
 The features in this decoding approach are the average potential amplitudes within a time window at each electrode. 
 For example, if decoding using 64-channel EEG then there will be 64 features used for analyses (i.e. a 64 dimensions in the dataset).
 
-###Temporal decoding
+### Temporal decoding
 
 Temporal decoding performs MVPA on the pattern of potential amplitudes at each time point within a time window of interest.
 A separate decoding analysis is done for each electrode.
 The features in this decoding approach are the potential amplitudes at each time point for a given electrode.
 For example, if there are 10 samples within the time window of interest then there will be 10 features used for analyses (i.e. 10 dimensions in the dataset).
 
-###Spatio-temporal decoding
+### Spatio-temporal decoding
 
 Spatio-temporal decoding performs MVPA on the pattern of potential amplitudes at each time point within a time window, across all electrodes included in the analysis.
 This is similar to temporal decoding, except that data from all electrodes are used to train and test the classifier (instead of one electrode at a time).
 The features in this decoding approach are the potential amplitudes at each time point, for each electrode included in the analysis.
 For example, if there are 10 samples within the time window of interest and 64 channels then there will be 640 features used for analyses (i.e. 640 dimensions in the dataset).
 
-###Cross-condition decoding
+### Cross-condition decoding
 
 Cross-condition decoding allows you to train the classifier on one set of data and then test the classifier on a separate set of data.
 This approach can be useful to determine whether any observed multivariate pattern differences are stable across different testing conditions.
 For example, cross-condition decoding can be used to test whether differences in multivariate patterns evoked by different object categories (such as faces and chairs) are stable across different experimental tasks.
 
-###Permutation decoding with randomly-shuffled condition labels
+### Permutation decoding with randomly-shuffled condition labels
 
 Permutation decoding is the same as the above MVPA approaches but with the condition labels randomly-assigned to each trial for each analysis. 
 Permutation decoding can be used to generate a distribution for the null hypothesis (in this case the null hypothesis is that the patterns in each condition are exchangeable).
 This approach is similar to the univariate permutation test.
 
-###Feature weight extraction
+### Feature weight extraction
 
 DDTBox can extract feature weights from the SVM classification results.
 Each EEG data channel is assigned a feature weight based on the importance of each channel for the SVM classification.
 For more information on how to interpret feature weights see [Haufe et al. (2014)](http://www.sciencedirect.com/science/article/pii/S1053811913010914).
 
-###Decoding using LibLINEAR (Advanced)
+### Decoding using LibLINEAR (Advanced)
 
 DDTBox also supports decoding with LibLINEAR, a toolbox related to LibSVM.
 LibLINEAR does not have the full range of functionality of LibSVM, but is generally much faster.
@@ -201,7 +190,7 @@ Total time to complete analyses using LibSVM was XXXXX.
 The total time required using LibLINEAR was XXXXX.
 
 
-###SVM Backend Options (Advanced)
+### SVM Backend Options (Advanced)
 
 DDTBox uses LibSVM and LibLINEAR for multivariate pattern classification and support-vector regression. 
 LibSVM and LibLINEAR require input flags to specify the type of statistical model that will be used for decoding. 
@@ -292,7 +281,7 @@ Support Vector Classification with LibLINEAR - '-s 2 -c 1'
 
 
 
-###Decoding Z-scored data
+### Decoding Z-scored data
 
 For some analyses it can be useful to convert the EEG or other data into z-scores before MVPA.
 This can be useful for identifying patterns across sensors and/or time that are independent of overall amplitude differences across conditions.
@@ -309,7 +298,7 @@ The way in which data are converted into z-scores depends on the analysis type:
 **Spatio-temporal decoding**: Data are z-scored across time-points for each individual electrode.
 
 
-###List of configuration settings for decoding
+### List of configuration settings for decoding
 
 The following configuration parameters can be set within the EEGLab GUI or in MATLAB scripts when calling DDTBox functions:
 
@@ -352,30 +341,30 @@ There are no true defaults in DDTBox, so it is a good idea to set all parameters
 
 
 
-##Example: Multivariate pattern classification with support vector machines (SVMs)##
+## Example: Multivariate pattern classification with support vector machines (SVMs)
 
-###Run in EEGLab
-
-
-###Independently from EEGLab
+### Run in EEGLab
 
 
+### Independently from EEGLab
 
-##Analysing the decoded data##
 
-###Plotting and interpreting the decoding results
+
+## Analysing the decoded data
+
+### Plotting and interpreting the decoding results
 
 *This section shows examples of individual- and group-level results, along with a guide for interpreting the plots.*
 
 DDTBox uses paired-samples t tests for analyses, however an advanced user can perform other statistical tests on the data.
 
 
-###Feature weight analyses
+### Feature weight analyses
 
 This section gives an example of feature weight analysis results, along with a guide for interpreting the plots.
 
 
-###Corrections for multiple comparisons
+### Corrections for multiple comparisons
 
 When performing multiple tests it is usually important to control the family-wise error rate (FWER) or false discovery rate (FDR) to maintain the probability of Type 1 errors (i.e. false rejections of the null hypothesis) at the nominal level (usually 0.05).
 DDTBox provides several options for multiple comparisons correction procedures.
@@ -501,33 +490,33 @@ For a more detailed discussion of the properties of false discovery rate control
 
 *Compare results from each correction method on the tutorial dataset results, showing how each method may be more/less sensitive to detect different effects*
 
-###Robust statistical inference tests
+### Robust statistical inference tests
 
 Analyses in DDTBox can also be performed using the paired-samples version of Yuen's t test ([Yuen, 1974](dx.doi.org/10.1093/biomet/61.1.165)) which is a robust alternative to the paired-samples t test.
 Paired-samples t tests can perform poorly (especially with regard to variance estimates) when the data distribution is not Gaussian/normal or when there are outliers.
 Yuen's t test generally performs well under normality, but can guard against problems caused by non-Gaussian data distributions.
 For an accessible introduction to robust statistical methods see [Wilcox (2012)](http://www.sciencedirect.com/science/book/9780123869838).
 
-##Tutorial: Plotting and analysing decoded data##
+## Tutorial: Plotting and analysing decoded data##
 
 *Use the tutorial dataset to show how decoding results can be plotted and interpreted*
 
-###Run in EEGLab###
+### Run in EEGLab
 
-###Independently from EEGLab###
-
-
+### Independently from EEGLab
 
 
-##Troubleshooting##
 
-###FAQ###
+
+## Troubleshooting
+
+### FAQ
 
 There have not yet been questions that have been frequently asked.
 
 *Could source FAQs from questions asked at the UniSA/Uni Melbourne Workshop*
 
-###Support###
+### Support
 
 *Detail details of bug reports and the DDTBox mailing list here*
 
