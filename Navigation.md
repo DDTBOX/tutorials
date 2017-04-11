@@ -10,6 +10,8 @@ This documentation aims to clearly explain the main features of the Decision Dec
 
 - _list subsections here under each section_
 
+- Analyses supported by DDTBOX
+
 [**2. Getting started**]()
 
 [**3. Multivariate decoding methods**]()
@@ -20,14 +22,19 @@ This documentation aims to clearly explain the main features of the Decision Dec
 
 [**6. Tutorial: Decoding non-EEG data with DDTBOX**]()
 
-[**7. Analysing results of decoding analyses**]()
+[**7. Analysing decoding results**]()
 
 [**8. Tutorial: Analysing and plotting decoding results**]()
 
-[**9. Resources for running MVPA analyses**]()
+[**9. MVPA resources and advice**]()
 
-[**10. Troubleshooting**]()
+[**10. Troubleshooting and support**]()
+
+- Frequently asked questions
+- Support
 
 [**(Advanced) DDTBOX code structure**]()
 
 [**(Advanced) Contributing to DDTBOX**]()
+
+[**Features under development (watch this space!)**]()
