@@ -6,35 +6,35 @@ This documentation aims to clearly explain the main features of the Decision Dec
 
 ## Navigation
 
-[**1. Introduction to DDTBOX**]()
+[**1. Introduction to DDTBOX**](https://github.com/DDTBOX/tutorials/blob/master/Introduction-to-DDTBOX.md)
 
 - _list subsections here under each section_
 
 - Analyses supported by DDTBOX
 
-[**2. Getting started**]()
+[**2. Getting started**](https://github.com/DDTBOX/tutorials/blob/master/Getting-Started.md)
 
-[**3. Multivariate decoding methods**]()
+[**3. Multivariate decoding methods**](https://github.com/DDTBOX/tutorials/blob/master/Multivariate-Decoding-Methods.md)
 
-[**4. Configuring DDTBOX for decoding**]()
+[**4. Configuring DDTBOX for decoding**](https://github.com/DDTBOX/tutorials/blob/master/Configuring-DDTBOX-For-Decoding.md)
 
-[**5. Tutorial: Decoding epoched EEG data with DDTBOX**]()
+[**5. Tutorial: Decoding epoched EEG data with DDTBOX**](https://github.com/DDTBOX/tutorials/blob/master/Tutorial-Decoding-Epoched-EEG-Data.md)
 
-[**6. Tutorial: Decoding non-EEG data with DDTBOX**]()
+[**6. Tutorial: Decoding non-EEG data with DDTBOX**](https://github.com/DDTBOX/tutorials/blob/master/Tutorial-Decoding-Non-EEG%20Data.md)
 
-[**7. Analysing decoding results**]()
+[**7. Analysing decoding results**](https://github.com/DDTBOX/tutorials/blob/master/Analysing-Decoding-Results.md)
 
-[**8. Tutorial: Analysing and plotting decoding results**]()
+[**8. Tutorial: Analysing and plotting decoding results**](https://github.com/DDTBOX/tutorials/blob/master/Tutorial-Analysing-and-Plotting-Decoding-Results.md)
 
-[**9. MVPA resources and advice**]()
+[**9. MVPA resources and advice**](https://github.com/DDTBOX/tutorials/blob/master/MVPA-Resources-and-Advice.md)
 
-[**10. Troubleshooting and support**]()
+[**10. Troubleshooting and support**](https://github.com/DDTBOX/tutorials/blob/master/Troubleshooting-and-Support.md)
 
 - Frequently asked questions
 - Support
 
-[**(Advanced) DDTBOX code structure**]()
+[**(Advanced) DDTBOX code structure**](https://github.com/DDTBOX/tutorials/blob/master/DDTBOX-Code-Structure.md)
 
-[**(Advanced) Contributing to DDTBOX**]()
+[**(Advanced) Contributing to DDTBOX**](https://github.com/DDTBOX/tutorials/blob/master/Contributing-to-DDTBOX.md)
 
-[**Features under development (watch this space!)**]()
+[**Features under development (watch this space!)**](https://github.com/DDTBOX/tutorials/blob/master/Features-Under-Development.md)
